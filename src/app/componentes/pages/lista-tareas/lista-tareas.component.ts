@@ -1,4 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { TareasService } from '../../services/tareas.service';
+
+
 
 @Component({
   selector: 'app-lista-tareas',
@@ -6,6 +9,21 @@ import { Component } from '@angular/core';
   styles: [
   ]
 })
-export class ListaTareasComponent {
+export class ListaTareasComponent implements OnInit {
+
+  
+  
+  ngOnInit() {
+    this.tareasServices.getTareas(); 
+  }
+
+  get tareas (){
+    return this.tareasServices.tareas
+  }
+
+  constructor(
+    private tareasServices : TareasService
+  ){}
+
 
 }

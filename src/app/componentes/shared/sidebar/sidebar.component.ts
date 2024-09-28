@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { menu } from '../../common/models/models';
+import { menuInterface } from '../../common/models/models';
 
 @Component({
   selector: 'app-sidebar',
@@ -9,13 +9,13 @@ import { menu } from '../../common/models/models';
 })
 export class SidebarComponent {
 
-  templateMenu: menu[] =[
+  templateMenu: menuInterface[] =[
     {
-      texto:"Tareas",
+      texto:"Crear Tareas",
       ruta: "./velaio/crear-tareas"
     },
     {
-      texto:"Recursos",
+      texto:"Lista Tareas",
       ruta: "./velaio/lista-tareas"
     },
 

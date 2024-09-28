@@ -1,22 +1,25 @@
-export interface menu{
+export interface menuInterface{
     texto:string;
     ruta: string;
 }
 
-export interface tareas{
-    id:number;
+export interface tareasInterface{
+    id?:number;
     nombre:string;
     fecha: Date;
-    persona: persona;
+    estado?:boolean
+    persona: personaInterface[];
 }
 
-export interface persona{
+export interface personaInterface{
     nombre: string;
     edad:number;
-    habilidades: habilidades[]
+    habilidades: habilidadesInterface[]
 
 }
 
-export interface habilidades{
+export interface habilidadesInterface{
     habilidad:string
 }
+
+

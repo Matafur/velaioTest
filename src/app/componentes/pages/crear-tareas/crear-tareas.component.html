@@ -1,1 +1,129 @@
-<p>crear-tareas works!</p>
+<h2>Crear Nueva Tarea</h2>
+<hr>
+
+<form  autocomplete="off" [formGroup]="miFormulario" (ngSubmit)="enviar()" >
+    <!-- Nombre Tarea -->
+    <div class="mb-3 row">
+        <label class="col-sm-3 col-form-label">Nombre de la Tarea</label>
+        <div class="col-sm-9">
+            <input class="form-control" name="nombreTarea" formControlName="nombreTarea" placeholder="Nombre de la tarea">
+            <span class="form-text text-danger" *ngIf="validarCampo('nombreTarea')">
+                Este campo debe tener minimo 3 caracteres
+            </span>
+        </div>
+    </div>
+    <!-- Fecha Limite-->
+    <div class="mb-3 row">
+        <label class="col-sm-3 col-form-label">Fecha Limite</label>
+        <div class="col-sm-9">
+            <input class="form-control" type="date" name="fecha" formControlName="fecha" placeholder="Fecha limite de la tarea">
+            <span class="form-text text-danger" *ngIf="validarCampo('fecha')">
+                La fecha debe ser mayor a hoy
+            </span>
+        </div>
+    </div>
+
+    <!-- Arreglo Personas --> 
+    <h4 class="mb-3">Personas Asociadas</h4>
+
+    <div formArrayName="personas">
+        <div *ngFor="let persona of personasArray.controls; index as i" [formGroupName]="i" >
+            <!-- Input Nombre --> 
+            <div class="mb-3 row" >
+                <label class="col-sm-3 col-form-label">Nombre</label>
+                <div class="col-sm-9">
+                    <input class="form-control" name="nombre" formControlName="nombre" placeholder="Nombre de la persona">
+                    <span class="form-text text-danger" *ngIf="validarCampo('nombre')">
+                        El nombre debe ser mayor a 4 caracteres
+                    </span>
+                </div>
+            </div>
+            <!-- Input Edad -->
+            <div class="mb-3 row">
+                <label class="col-sm-3 col-form-label">Edad</label>
+                <div class="col-sm-9">
+                    <input class="form-control" type="number"  min="0" name="edad" formControlName="edad" placeholder="Edad de la persona">
+                    <span class="form-text text-danger" *ngIf="validarCampo('edad')">
+                        Debe ser mayor de 18 años
+                    </span>
+                </div>
+            </div>
+            <!-- Input Habilidades -->
+            <div formArrayName="habilidades">
+                <h4 class="mb-3">Habilidades</h4>
+                <div class="mb-3 row">
+                    <label class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9">
+                        <div class="input-group">
+                            <input class="form-control" placeholder="Añadir Habilidad" [formControl]="nuevoHabilidad" (keyup.enter)="agregarHabilidad(i)">
+                            <button type="button" class="btn btn-outline-primary" (click)="agregarHabilidad(i)">
+                                Agregar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            
+            
+            <!-- Lista Habilidades -->
+                <div class="mb-3 row">
+                    <label class="col-sm-3 col-form-label"> </label>
+                    <div class="col-sm-9">
+                            <div class="input-group mb-1" *ngFor="let habilidad of getHabilidades(i).controls; index as j" >
+                                <input class="form-control" [formControlName]="j" readonly>
+                                <button type="button" class="btn btn-outline-danger"(click)="eliminarHabilidad(i, j)">
+                                    Eliminar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <button type="button" class="btn btn-danger float-end" (click)="eliminarPersona(i)">
+                        Eliminar Persona
+                    </button>
+                </div>
+            </div>
+            <hr>
+        </div>
+    </div> 
+  
+  
+
+    <div class="row mt-5">
+        <div class="col-sm-6">
+            <button type="submit" class="btn btn-primary float-start">
+                Guardar Tarea
+            </button>
+        </div>
+    </div>
+</form>
+
+
+<div class="row">
+    <div class="col-sm-6">
+        <button type="button" class="btn btn-success float-start" (click)="agregarPersona()">
+            Añadir Persona
+        </button>
+    </div>
+</div>
+
+<!-- 
+<app-lista-tareas></app-lista-tareas> -->
+<h2>Form Valid:{{miFormulario.valid}}</h2>
+
+<h2>nombreTarea</h2>
+<pre>{{miFormulario.controls['nombreTarea'].errors | json}}</pre>
+
+<h2>fecha</h2>
+<pre>{{miFormulario.controls['fecha'].errors | json}}</pre>
+
+<h2>nombre</h2>
+<pre>{{miFormulario.controls['nombre'].errors | json}}</pre>
+
+<h2>edad</h2>
+<pre>{{miFormulario.controls['edad'].errors | json}}</pre>
+
+<!-- <h2>Habilidad</h2>
+<pre>{{miFormulario.controls['nuevoHabilidad'].errors | json}}</pre> -->

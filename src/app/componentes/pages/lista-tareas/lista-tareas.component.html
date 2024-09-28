@@ -1,1 +1,30 @@
-<p>lista-tareas works!</p>
+<h2>Lista de tareas</h2>
+
+<div class="row">
+    <div class="col-sm-6 mt-3" *ngFor="let item of tareas">
+        <div class="card">
+            <div class="card-body">
+                <ul class="list-group">
+                    <li class="list-group">
+                        Tarea:{{item.id}}
+                    </li>
+                    <li class="list-group">
+                        {{item.nombre}} {{item.fecha | date}}
+                    </li>
+                    <li class="list-group">
+                        Estado: {{ item.estado ? 'Terminado' : 'Pendiente' }}
+                    </li>
+                    <strong>Participantes:</strong> 
+                    <ul *ngFor="let persona of item.persona">
+                        <li>{{persona.nombre}} {{persona.edad}} </li>
+                        <strong>Habilidades</strong>
+                        <span *ngFor="let habilidad of persona.habilidades">
+                            {{habilidad.habilidad}} 
+                            </span>
+                    </ul>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+

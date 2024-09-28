@@ -1,0 +1,99 @@
+<form autocomplete="off" [formGroup]="miFormulario">
+    <!-- Nombre Tarea -->
+    <div class="mb-3 row">
+        <label class="col-sm-3 col-form-label">Nombre de la Tarea</label>
+        <div class="col-sm-9">
+            <input class="form-control" name="nombreTarea" formControlName="nombreTarea" placeholder="Nombre de la tarea">
+            <span class="form-text text-danger" *ngIf="validarCampo('nombreTarea')">
+                Este campo debe tener mínimo 3 caracteres
+            </span>
+        </div>
+    </div>
+
+    <!-- Fecha Limite -->
+    <div class="mb-3 row">
+        <label class="col-sm-3 col-form-label">Fecha Limite</label>
+        <div class="col-sm-9">
+            <input class="form-control" type="date" name="fecha" formControlName="fecha" placeholder="Fecha límite de la tarea">
+            <span class="form-text text-danger" *ngIf="validarCampo('fecha')">
+                La fecha debe ser mayor a hoy
+            </span>
+        </div>
+    </div>
+
+    <!-- Personas Asociadas -->
+    <h4 class="mb-3">Personas Asociadas</h4>
+    <div formArrayName="personas">
+        <div *ngFor="let persona of personasArray.controls; let i = index" [formGroupName]="i">
+            <!-- Nombre -->
+            <div class="mb-3 row">
+                <label class="col-sm-3 col-form-label">Nombre</label>
+                <div class="col-sm-9">
+                    <input class="form-control" formControlName="nombre" placeholder="Nombre de la persona">
+                    <span class="form-text text-danger" *ngIf="persona.get('nombre')?.invalid && persona.get('nombre')?.touched">
+                        El nombre debe tener más de 4 caracteres
+                    </span>
+                </div>
+            </div>
+
+            <!-- Edad -->
+            <div class="mb-3 row">
+                <label class="col-sm-3 col-form-label">Edad</label>
+                <div class="col-sm-9">
+                    <input class="form-control" type="number" formControlName="edad" placeholder="Edad de la persona">
+                    <span class="form-text text-danger" *ngIf="persona.get('edad')?.invalid && persona.get('edad')?.touched">
+                        Debe ser mayor de 18 años
+                    </span>
+                </div>
+            </div>
+
+            <!-- Habilidades -->
+            <div formArrayName="habilidades">
+                <h5 class="mb-3">Habilidades</h5>
+                <div class="mb-3 row">
+                    <label class="col-sm-3 col-form-label">Añadir Habilidad</label>
+                    <div class="col-sm-9">
+                        <div class="input-group">
+                            <input class="form-control" [formControl]="nuevoHabilidad" placeholder="Añadir Habilidad" (keyup.enter)="agregarHabilidad(i)">
+                            <button class="btn btn-outline-primary" (click)="agregarHabilidad(i)">Agregar</button>
+                        </div>
+                    </div>
+                </div>
+      
+
+                <!-- Lista de Habilidades -->
+                <div class="mb-3 row">
+                    <div class="col-sm-9 offset-sm-3">
+                        <div *ngFor="let habilidad of getHabilidades(i).controls; let j = index" class="input-group mb-1">
+                            <input class="form-control" [formControlName]="j" readonly>
+                            <button type="button" class="btn btn-outline-danger" (click)="eliminarHabilidad(i, j)">Eliminar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Botón para eliminar persona -->
+            <div class="row">
+                <div class="col-sm-6">
+                    <button type="button" class="btn btn-danger float-end" (click)="eliminarPersona(i)">Eliminar Persona</button>
+                </div>
+            </div>
+
+            <hr>
+        </div>
+    </div>
+
+    <!-- Botón para añadir nueva persona -->
+    <div class="row">
+        <div class="col-sm-6">
+            <button type="button" class="btn btn-success float-start" (click)="agregarPersona()">Añadir Persona</button>
+        </div>
+    </div>
+
+    <!-- Guardar Tarea -->
+    <div class="row mt-5">
+        <div class="col-sm-6">
+            <button type="button" (click)="enviar()" class="btn btn-primary float-start">Guardar Tarea</button>
+        </div>
+    </div>
+</form>
