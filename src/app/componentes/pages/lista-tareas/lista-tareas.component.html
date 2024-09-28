@@ -4,27 +4,26 @@
     <div class="col-sm-6 mt-3" *ngFor="let item of tareas">
         <div class="card">
             <div class="card-body">
-                <ul class="list-group">
-                    <li class="list-group">
-                        Tarea:{{item.id}}
-                    </li>
-                    <li class="list-group">
-                        {{item.nombre}} {{item.fecha | date}}
-                    </li>
-                    <li class="list-group">
-                        Estado: {{ item.estado ? 'Terminado' : 'Pendiente' }}
-                    </li>
-                    <strong>Participantes:</strong> 
-                    <ul *ngFor="let persona of item.persona">
-                        <li>{{persona.nombre}} {{persona.edad}} </li>
-                        <strong>Habilidades</strong>
-                        <span *ngFor="let habilidad of persona.habilidades">
-                            {{habilidad.habilidad}} 
-                            </span>
-                    </ul>
-                </ul>
+                <h5 class="card-title">Tarea: {{item.id}}</h5>
+                <p class="card-text">
+                    <strong>Nombre:</strong> {{item.nombre}}<br>
+                    <strong>Fecha:</strong> {{item.fecha | date}}<br>
+                    <strong>Estado:</strong> {{ item.estado ? 'Terminado' : 'Pendiente' }}
+                </p>
+                <h6 class="card-subtitle mb-2 text-muted">Participantes:</h6>
+<ul *ngFor="let persona of item.persona">
+    <li>
+        <strong>{{persona.nombre}} ({{persona.edad}} años)</strong>
+        <div>
+            <strong>Habilidades:</strong>
+            <span *ngFor="let habilidad of persona.habilidades" class="badge bg-info ms-1">
+                {{habilidad.habilidad ? habilidad.habilidad : habilidad}}
+            </span>
+        </div>
+    </li>
+</ul>
+
             </div>
         </div>
     </div>
 </div>
-

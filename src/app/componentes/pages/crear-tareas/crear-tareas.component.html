@@ -22,73 +22,92 @@
             </span>
         </div>
     </div>
+    <div class="mb-3 row">
+        <label class="col-sm-3 col-form-label">Estado</label>
+        <div class="col-sm-9">
+            <select class="form-select" formControlName="estado">
+                <option value="" disabled selected>Selecciona un estado</option>
+                <option value="pendiente">Pendiente</option>
+                <option value="cancelada">Terminada</option>
+            </select>
+            <span class="form-text text-danger" *ngIf="validarCampo('estado')">
+                Por favor selecciona un estado.
+            </span>
+        </div>
+    </div>
 
     <!-- Arreglo Personas --> 
     <h4 class="mb-3">Personas Asociadas</h4>
 
     <div formArrayName="personas">
-        <div *ngFor="let persona of personasArray.controls; index as i" [formGroupName]="i" >
-            <!-- Input Nombre --> 
-            <div class="mb-3 row" >
-                <label class="col-sm-3 col-form-label">Nombre</label>
-                <div class="col-sm-9">
-                    <input class="form-control" name="nombre" formControlName="nombre" placeholder="Nombre de la persona">
-                    <span class="form-text text-danger" *ngIf="validarCampo('nombre')">
-                        El nombre debe ser mayor a 4 caracteres
-                    </span>
-                </div>
-            </div>
-            <!-- Input Edad -->
-            <div class="mb-3 row">
-                <label class="col-sm-3 col-form-label">Edad</label>
-                <div class="col-sm-9">
-                    <input class="form-control" type="number"  min="0" name="edad" formControlName="edad" placeholder="Edad de la persona">
-                    <span class="form-text text-danger" *ngIf="validarCampo('edad')">
-                        Debe ser mayor de 18 años
-                    </span>
-                </div>
-            </div>
-            <!-- Input Habilidades -->
-            <div formArrayName="habilidades">
-                <h4 class="mb-3">Habilidades</h4>
-                <div class="mb-3 row">
-                    <label class="col-sm-3 col-form-label"></label>
+        <div *ngFor="let persona of getCtrl('personas', miFormulario)?.controls; index as formularioPersona"  >
+            <!-- Input Nombre -->
+            <div [formGroupName]="formularioPersona">
+                <div class="mb-3 row" >
+                    <label class="col-sm-3 col-form-label">Nombre</label>
                     <div class="col-sm-9">
-                        <div class="input-group">
-                            <input class="form-control" placeholder="Añadir Habilidad" [formControl]="nuevoHabilidad" (keyup.enter)="agregarHabilidad(i)">
-                            <button type="button" class="btn btn-outline-primary" (click)="agregarHabilidad(i)">
-                                Agregar
+                        <input class="form-control" name="nombre" formControlName="nombre" placeholder="Nombre de la persona">
+                        <span class="form-text text-danger" *ngIf="validarCampoArray('nombre', formularioPersona)">
+                            El nombre debe ser mayor a 4 caracteres
+                        </span>
+                    </div>
+                </div>
+                <!-- Input Edad -->
+                <div class="mb-3 row">
+                    <label class="col-sm-3 col-form-label">Edad</label>
+                    <div class="col-sm-9">
+                        <input class="form-control" type="number"  min="0" name="edad" formControlName="edad" placeholder="Edad de la persona">
+                        <span class="form-text text-danger" *ngIf="validarCampoArray('edad', formularioPersona)">
+                            Debe ser mayor de 18 años
+                        </span>
+                    </div>
+                </div>
+                
+                <div formArrayName="habilidades">
+                    <h4 class="mb-3">Habilidades</h4>
+                    
+                    <!-- Input para añadir nuevas habilidades -->
+                    <div class="mb-3 row">
+                        <label class="col-sm-3 col-form-label"></label>
+                        <div class="col-sm-9">
+                          <div class="input-group">
+                            <input class="form-control" placeholder="Añadir Habilidad" #habilidadInput >
+                            <button type="button" class="btn btn-outline-primary" (click)="agregarHabilidad(formularioPersona, habilidadInput)">
+                              Agregar
                             </button>
+                          </div>
                         </div>
+                      </div>
+              
+                    <!-- Lista de habilidades -->
+                    <div class="mb-3 row" *ngFor="let habilidad of habilidadesArray(formularioPersona).controls; index as listaHabilidades">
+                      <label class="col-sm-3 col-form-label"></label>
+                      <div class="col-sm-9">
+                        <div class="input-group mb-1">
+                          <input class="form-control" [formControlName]="listaHabilidades" readonly>
+                          <button type="button" class="btn btn-outline-danger" (click)="eliminarHabilidad(formularioPersona,listaHabilidades)">
+                            Eliminar
+                          </button>
+                        </div>
+                      </div>
                     </div>
                 </div>
 
-            
-            
-            <!-- Lista Habilidades -->
-                <div class="mb-3 row">
-                    <label class="col-sm-3 col-form-label"> </label>
-                    <div class="col-sm-9">
-                            <div class="input-group mb-1" *ngFor="let habilidad of getHabilidades(i).controls; index as j" >
-                                <input class="form-control" [formControlName]="j" readonly>
-                                <button type="button" class="btn btn-outline-danger"(click)="eliminarHabilidad(i, j)">
-                                    Eliminar
-                            </button>
-                        </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <button type="button" class="btn btn-danger float-end" (click)="eliminarPersona(formularioPersona)">
+                            Eliminar Persona
+                        </button>
                     </div>
                 </div>
+                <hr>
             </div>
-            <div class="row">
-                <div class="col-sm-6">
-                    <button type="button" class="btn btn-danger float-end" (click)="eliminarPersona(i)">
-                        Eliminar Persona
-                    </button>
-                </div>
-            </div>
-            <hr>
-        </div>
+            
+        </div> 
     </div> 
-  
+    <span class="form-text text-danger" *ngIf="personasLength === 0">
+        Mínimo debe haber una persona asociada a la tarea.
+    </span>
   
 
     <div class="row mt-5">
@@ -109,21 +128,14 @@
     </div>
 </div>
 
-<!-- 
-<app-lista-tareas></app-lista-tareas> -->
-<h2>Form Valid:{{miFormulario.valid}}</h2>
 
-<h2>nombreTarea</h2>
-<pre>{{miFormulario.controls['nombreTarea'].errors | json}}</pre>
-
-<h2>fecha</h2>
-<pre>{{miFormulario.controls['fecha'].errors | json}}</pre>
-
-<h2>nombre</h2>
-<pre>{{miFormulario.controls['nombre'].errors | json}}</pre>
-
-<h2>edad</h2>
-<pre>{{miFormulario.controls['edad'].errors | json}}</pre>
-
-<!-- <h2>Habilidad</h2>
-<pre>{{miFormulario.controls['nuevoHabilidad'].errors | json}}</pre> -->
+<div class="modal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Tarea creada</h5>
+          <button type="button" class="btn btn-primary">Aceptar</button>
+        </div>
+      </div>
+    </div>
+</div>
