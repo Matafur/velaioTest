@@ -1,24 +1,28 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { PagesRoutingModule } from './pages-routing.module';
-import { ListaTareasComponent } from './lista-tareas/lista-tareas.component';
 import { CrearTareasComponent } from './crear-tareas/crear-tareas.component';
-import { PruebaComponent } from './prueba/prueba.component';
+import { ListaTareasComponent } from './lista-tareas/lista-tareas.component';
+import { EditarTareaComponent } from './editar-tarea/editar-tarea.component';
+import { RouterModule } from '@angular/router';
+
 
 
 
 @NgModule({
   declarations: [
-    ListaTareasComponent,
     CrearTareasComponent,
-    PruebaComponent
+    EditarTareaComponent,
   ],
   imports: [
     CommonModule,
     PagesRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FormsModule,
+    RouterModule,
+    ListaTareasComponent
   ]
 })
 export class PagesModule { }

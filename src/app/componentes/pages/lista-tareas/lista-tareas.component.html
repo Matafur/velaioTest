@@ -1,7 +1,16 @@
 <h2>Lista de tareas</h2>
 
 <div class="row">
-    <div class="col-sm-6 mt-3" *ngFor="let item of tareas">
+    <div class="mb-3">
+        <label for="estadoFiltro">Filtrar por estado:</label>
+        <select id="estadoFiltro" [(ngModel)]="filtroEstado" class="form-select" (change)="filtrarTareas()">
+            <option value=""  disabled selected>Selecciona un estado</option>
+            <option value="todas">Todas</option>
+            <option value="pendiente">Pendientes</option>
+            <option value="terminada">Terminadas</option>
+        </select>
+    </div>
+    <div class="col-sm-6 mt-3" *ngFor="let item of tareasFiltradas">
         <div class="card">
             <div class="card-body">
                 <h5 class="card-title">Tarea: {{item.id}}</h5>
@@ -11,17 +20,20 @@
                     <strong>Estado:</strong> {{ item.estado ? 'Terminado' : 'Pendiente' }}
                 </p>
                 <h6 class="card-subtitle mb-2 text-muted">Participantes:</h6>
-<ul *ngFor="let persona of item.persona">
-    <li>
-        <strong>{{persona.nombre}} ({{persona.edad}} años)</strong>
-        <div>
-            <strong>Habilidades:</strong>
-            <span *ngFor="let habilidad of persona.habilidades" class="badge bg-info ms-1">
-                {{habilidad.habilidad ? habilidad.habilidad : habilidad}}
-            </span>
-        </div>
-    </li>
-</ul>
+                <ul *ngFor="let persona of item.persona">
+                    <li>
+                        <strong>{{persona.nombre}} ({{persona.edad}} años)</strong>
+                        <div>
+                            <strong>Habilidades:</strong>
+                            <span *ngFor="let habilidad of persona.habilidades" class="badge bg-info ms-1">
+                                {{habilidad.habilidad ? habilidad.habilidad : habilidad}}
+                            </span>
+                        </div>
+                    </li>
+                </ul>
+                <button [routerLink]="['/editar-tarea', item.id]" class="btn btn-primary">
+                    Editar Tarea
+                </button>
 
             </div>
         </div>
